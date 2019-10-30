@@ -31,21 +31,27 @@ Route::group(
         'middleware' => 'api',
     ],
     function ($router): void {
-        Route::get('/fetch/device/{deviceId}', 'MeasurementController@fetchDeviceMeasurement');
-        Route::get('/fetch/all', 'MeasurementController@fetchAllDevicesMeasurements');
+        Route::post('/fetch/{deviceId}', 'MeasurementController@fetchDeviceMeasurement')->where(['deviceId' => '[0-9]+']);;
+        Route::post('/fetch/all', 'MeasurementController@fetchAllDevicesMeasurements');
+        Route::post('/fetch/device/{deviceId}/{token}', 'DeviceController@fetchDevice');
+
+        Route::post('/measurements/{deviceId}', 'MeasurementController@get');
 
         Route::post('/device', 'DeviceController@create');
-        Route::put('/device/{deviceId}', 'DeviceController@edit');
         Route::get('/device/{deviceId}', 'DeviceController@device');
         Route::get('/devices', 'DeviceController@devices');
         Route::delete('/device/{deviceId}', 'DeviceController@remove');
 
+        Route::get('/roles', 'RoleController@roles');
+        Route::post('/user/{userId}/role/{roleId}', 'RoleController@changeRole');
+        Route::post('/user/{userId}/password', 'UserController@changePassword');
 
 
         Route::get('/users', 'UserController@users');
-        Route::get('/user', 'UserController@users');
+        Route::get('/user/{userId}', 'UserController@user');
+
+
         Route::post('/user', 'UserController@create');
         Route::put('/user/{userId}', 'UserController@edit');
-        Route::post('/changePassword', 'UserController@changePassword');
         Route::delete('/user/{userId}', 'UserController@remove');
     });

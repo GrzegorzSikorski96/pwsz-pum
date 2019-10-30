@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Requests\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -63,14 +64,12 @@ class UserController extends Controller
             ->getResponse();
     }
 
-    public function changePassword(User $user)
+    public function changePassword(Request $request, $userId)
     {
-        $edited = $this->userService->changePassword($user->all());
+        $edited = $this->userService->changePassword($request->password, $userId);
 
         return $this->apiResponse
-            ->setData([
-                'user' => $edited,
-            ])
+            ->setMessage('Hasło zmienione.')
             ->setSuccessStatus()
             ->getResponse();
     }

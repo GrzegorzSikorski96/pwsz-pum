@@ -27,7 +27,7 @@ class CreateMeasurementsTable extends Migration
             $table->string('IJPString');
 
             $table->bigInteger('device_id')->unsigned();
-            $table->foreign('device_id')->references('id')->on('devices');
+            $table->foreign('device_id')->references('id')->on('devices')->onDelete('cascade');
 
             $table->timestamps();
         });

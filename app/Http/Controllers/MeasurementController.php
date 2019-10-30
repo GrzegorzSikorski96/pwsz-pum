@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Services\DeviceService;
 use App\Services\MeasurementService;
+use Illuminate\Http\Request;
 
 class MeasurementController extends Controller
 {
@@ -40,9 +41,13 @@ class MeasurementController extends Controller
             ->getResponse();
     }
 
-    public function get($device_id)
+    public function get(Request $request, int $deviceId)
     {
-        $measurements = $this->deviceService->measurements($device_id);
+        if ($request['start_date']) {
+            $measurements = $this->measurementService->getFromDate($deviceId, $request['start_date']);
+        } else {
+            $measurements = $this->deviceService->measurements($deviceId);
+        }
 
         return $this->apiResponse
             ->setData([

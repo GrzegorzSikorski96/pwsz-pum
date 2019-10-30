@@ -17,6 +17,16 @@ class DeviceController extends Controller
         $this->deviceService = $deviceService;
     }
 
+    public function fetchDevice(string $deviceId, string $token)
+    {
+        $device = $this->deviceService->fetch($deviceId, $token);
+
+        return $this->apiResponse
+            ->setData($device)
+            ->setSuccessStatus()
+            ->getResponse();
+    }
+
     public function device($deviceId): JsonResponse
     {
         $device = $this->deviceService->device($deviceId);
@@ -36,18 +46,6 @@ class DeviceController extends Controller
         return $this->apiResponse
             ->setData([
                 'devices' => $devices,
-            ])
-            ->setSuccessStatus()
-            ->getResponse();
-    }
-
-    public function create(Device $device): JsonResponse
-    {
-        $device = $this->deviceService->create($device->all());
-
-        return $this->apiResponse
-            ->setData([
-                'device' => $device,
             ])
             ->setSuccessStatus()
             ->getResponse();

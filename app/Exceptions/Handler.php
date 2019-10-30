@@ -1,51 +1,68 @@
 <?php
 
-namespace App\Exceptions;
+declare(strict_types=1);
 
+namespace APP\Exceptions;
+
+use App\Helpers\ApiResponse;
 use Exception;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Handler extends ExceptionHandler
 {
-    /**
-     * A list of the exception types that are not reported.
-     *
-     * @var array
-     */
+    protected $apiResponse;
+
+    public function __construct(Container $container, ApiResponse $apiResponse)
+    {
+        parent::__construct($container);
+        $this->apiResponse = $apiResponse;
+    }
+
     protected $dontReport = [
         //
     ];
 
-    /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     *
-     * @var array
-     */
     protected $dontFlash = [
         'password',
         'password_confirmation',
     ];
 
-    /**
-     * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
-     */
     public function report(Exception $exception)
     {
         parent::report($exception);
     }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
-     */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ModelNotFoundException) {
+            return $this->apiResponse
+                ->setMessage(__('messages.exceptions.not_found'))
+                ->setFailureStatus(404)
+                ->getResponse();
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->apiResponse
+                ->setMessage(__('messages.exceptions.not_found'))
+                ->setFailureStatus(404)
+                ->getResponse();
+        }
+
+        if ($exception instanceof UnauthorizedException || $exception instanceof UnauthorizedHttpException) {
+            return $this->apiResponse
+                ->setMessage(__('messages.exceptions.unauthorized'))
+                ->setFailureStatus(401)
+                ->getResponse();
+        }
+
         return parent::render($request, $exception);
     }
 }

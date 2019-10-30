@@ -25,12 +25,20 @@ class UserService
 
     public function user(int $userId): User
     {
-        return User::findOrFail($userId);
+        return User::with(['role'])->findOrFail($userId);
     }
 
     public function users(): Collection
     {
         return User::all();
+    }
+
+    public function changePassword(string $password, int $userId)
+    {
+        $user = $this->user($userId);
+
+        $user->password = $this->hashPassword($password);
+        $user->save();
     }
 
     public function edit(array $data, int $userId): User

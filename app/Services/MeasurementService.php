@@ -4,22 +4,26 @@ namespace App\Services;
 
 use App\Models\Device;
 use App\Models\Measurement;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Collection;
 
 class MeasurementService
 {
     protected $deviceService;
+    protected $linkService;
 
-    public function __construct(DeviceService $deviceService)
+    public function __construct(DeviceService $deviceService, LinkService $linkService)
     {
         $this->deviceService = $deviceService;
+        $this->linkService = $linkService;
     }
 
     public function fetchDeviceData(Device $device): Measurement
     {
         $device = $this->deviceService->device($device->id);
 
-        $url = $this->generateUrl($device);
+        $url = $this->linkService->generateUrl($device->Device, $device->token);
 
         $client = new Client();
         $response = $client->get($url);
@@ -31,7 +35,7 @@ class MeasurementService
         return $measurement;
     }
 
-    public function fetchData()
+    public function fetchData(): void
     {
         $devices = Device::all();
 
@@ -40,8 +44,11 @@ class MeasurementService
         }
     }
 
-    public function generateUrl(Device $device): string
+    public function getFromDate(int $deviceId, string $date): Collection
     {
-        return 'http://api.looko2.com/?method=GetLOOKO&id=' . $device->Device . '&token=' . $device->token;
+        $device = $this->deviceService->device($deviceId);
+        $measurement = $device->measurements()->where('created_at', '>', Carbon::parse($date))->get();
+
+        return $measurement;
     }
 }
