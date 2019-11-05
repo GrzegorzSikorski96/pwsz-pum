@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Device;
 use App\Models\Measurement;
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -66,5 +65,15 @@ class DeviceService
             'device' => $device,
             'measurement' => $measurement,
         ];
+    }
+
+    public function lastMeasurements(): Collection
+    {
+        $devices = Device::with('measurements')->get()->map(function ($query) {
+            $query->setRelation('measurements', $query->measurements->take(1));
+            return $query;
+        });
+
+        return $devices;
     }
 }

@@ -7,6 +7,7 @@ import Device from "./components/Device/Device";
 import Create from "./components/Device/Create";
 import UsersList from "./components/User/UsersList";
 import User from "./components/User/User";
+import CreateUser from "./components/User/CreateUser";
 
 Vue.use(Router);
 
@@ -53,6 +54,14 @@ export default new Router({
             path: '/users',
             name: 'Users',
             component: UsersList,
+            meta: {
+                roles: ['administrator']
+            }
+        },
+        {
+            path: '/user/create',
+            name: 'CreateUser',
+            component: CreateUser,
             meta: {
                 roles: ['administrator']
             }

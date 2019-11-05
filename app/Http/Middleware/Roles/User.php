@@ -24,8 +24,10 @@ class User
             Role::USER,
         ];
 
-        if (in_array(Auth::user()->role->id, $available)) {
-            return $next($request);
+        if (Auth::user()) {
+            if (in_array(Auth::user()->role->id, $available)) {
+                return $next($request);
+            }
         }
 
         throw new UnauthorizedException();

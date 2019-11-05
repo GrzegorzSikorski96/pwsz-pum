@@ -56,4 +56,16 @@ class MeasurementController extends Controller
             ->setSuccessStatus()
             ->getResponse();
     }
+
+    public function getLastMeasurements()
+    {
+        $devices = $this->deviceService->lastMeasurements();
+
+        return $this->apiResponse
+            ->setData([
+                'devices' => $devices
+            ])
+            ->setSuccessStatus()
+            ->getResponse();
+    }
 }

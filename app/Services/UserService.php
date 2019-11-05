@@ -2,9 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Role;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserService
 {
@@ -23,7 +28,7 @@ class UserService
         return Hash::make($password);
     }
 
-    public function user(int $userId): User
+    public function user(int $userId): Model
     {
         return User::with(['role'])->findOrFail($userId);
     }
@@ -37,8 +42,12 @@ class UserService
     {
         $user = $this->user($userId);
 
-        $user->password = $this->hashPassword($password);
-        $user->save();
+        if ($user->id == Auth::id() || Auth::user()->role_id == Role::ADMINISTRATOR) {
+            $user->password = $this->hashPassword($password);
+            $user->save();
+        } else {
+            throw new UnauthorizedException();
+        }
     }
 
     public function edit(array $data, int $userId): User

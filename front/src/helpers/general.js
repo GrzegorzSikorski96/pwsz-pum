@@ -20,6 +20,14 @@ export function initialize(store, router) {
         }
     );
 
+    axios.interceptors.request.use(function (config) {
+        // Do something before request is sent
+        let authKey = store.getters.getToken
+        config.headers["Authorization"] = `Bearer ${authKey}`;
+        return config;
+    });
+
+
     axios.interceptors.response.use(null, (error => {
         if (error.response.status === 401) {
             {

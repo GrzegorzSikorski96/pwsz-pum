@@ -25,7 +25,6 @@ class User extends ApiRequest
             'name' => 'required|string',
             'surname' => 'required|string',
             'email' => 'required|string',
-            'index' => 'string',
             'password' => 'string',
             'role_id' => 'integer',
         ];

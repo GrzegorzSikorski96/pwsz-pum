@@ -66,7 +66,7 @@ class UserController extends Controller
 
     public function changePassword(Request $request, $userId)
     {
-        $edited = $this->userService->changePassword($request->password, $userId);
+        $this->userService->changePassword($request->password, $userId);
 
         return $this->apiResponse
             ->setMessage('Hasło zmienione.')

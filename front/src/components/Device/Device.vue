@@ -5,6 +5,12 @@
                 <v-card>
                     <v-card-title>
                         Urządzenie: {{ device.Name }}
+                        <v-spacer>
+                        </v-spacer>
+                        <v-btn text icon color="error" @click="removeDevice()"
+                               elevation="2">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
                     </v-card-title>
 
                     <v-card-text>
@@ -44,26 +50,26 @@
                         </v-btn>
                     </v-card-title>
                     <v-card-text>
-                            <v-menu
-                                    v-model="menu"
-                                    :close-on-content-click="false"
-                                    :nudge-right="40"
-                                    transition="scale-transition"
-                                    offset-y
-                                    min-width="290px"
-                            >
-                                <template v-slot:activator="{ on }">
-                                    <v-text-field
-                                            v-model="credentials.start_date"
-                                            label="Pobierz dane od:"
-                                            prepend-icon="event"
-                                            readonly
-                                            v-on="on"
-                                    ></v-text-field>
-                                </template>
-                                <v-date-picker v-model="credentials.start_date" @input="menu2 = false"
-                                               :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
-                            </v-menu>
+                        <v-menu
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="290px"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                        v-model="credentials.start_date"
+                                        label="Pobierz dane od:"
+                                        prepend-icon="event"
+                                        readonly
+                                        v-on="on"
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="credentials.start_date" @input="menu2 = false"
+                                           :max="new Date().toISOString().substr(0, 10)"></v-date-picker>
+                        </v-menu>
 
 
                     </v-card-text>
@@ -225,7 +231,11 @@
                             this.Humidity.push([value.created_at, value.Humidity]);
                         })
                     })
-            }
+            },
+            async removeDevice() {
+                this.$http.delete(`/api/device/${this.device.id}`);
+                this.$router.push('/devices')
+            },
         },
         created() {
             this.fetchDevice();

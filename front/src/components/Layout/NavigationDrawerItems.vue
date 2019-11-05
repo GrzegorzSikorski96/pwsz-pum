@@ -38,6 +38,7 @@
                 {
                     name: 'Użytkownicy', links: [
                         {route: 'Users', label: 'Lista użytkowników', icon: 'users'},
+                        {route: 'CreateUser', label: 'Dodaj użytkownika', icon: 'plus'},
                     ]
                 },
             ]

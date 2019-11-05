@@ -1,58 +1,104 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+
+    <v-container fluid fill-height>
+        <v-card
+                class="mx-auto mt-3"
+                color="#F9F9F9"
+                max-width="400"
+                v-for="device in devices" :key="device.id"
+        >
+            <v-list-item two-line>
+                <v-list-item-content>
+                    <v-list-item-title class="headline">{{device.Name}}</v-list-item-title>
+                    <v-list-item-subtitle>Ostatni pomiar: {{device.measurements[0].created_at}}</v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
+
+            <v-card-text>
+                <v-row dense class="title">
+                    <span class="font-weight-bold text--primary mr-1">Temperatura: </span>
+                    {{device.measurements[0].Temperature}}&deg;C
+                </v-row>
+
+                <v-row dense class="title">
+                    <span class="font-weight-bold text--primary mr-1">PM1:  </span>
+                    <span :class="getColor(device.measurements[0].PM10, 'PM1')">{{device.measurements[0].PM1}}ug/m3</span>
+                </v-row>
+
+                <v-row dense class="title">
+                    <span class="font-weight-bold text--primary mr-1">PM2.5:  </span>
+                    <span :class="getColor(device.measurements[0].PM10, 'PM25')">{{device.measurements[0].PM25}}ug/m3</span>
+                </v-row>
+
+                <v-row dense class="title">
+                    <span class="font-weight-bold text--primary mr-1">PM10:  </span>
+                    <span :class="getColor(device.measurements[0].PM10, 'PM10')">{{device.measurements[0].PM10}}ug/m3</span>
+                </v-row>
+
+                <v-row dense class="title">
+                    <span class="font-weight-bold text--primary mr-1">Wilgotność:  </span>
+                    {{device.measurements[0].Humidity}}%
+                </v-row>
+            </v-card-text>
+        </v-card>
+    </v-container>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+    export default {
+        data: () => ({
+            devices: [],
+            colors: [
+                {PM1: 1, PM25: 12, PM10: 20, color: 'blue--text text--accent-3'},
+                {PM1: 3, PM25: 36, PM10: 60, color: 'light-green--text text--darken-1'},
+                {PM1: 5, PM25: 60, PM10: 100, color: 'lime--text text--lighten-2'},
+                {PM1: 7, PM25: 84, PM10: 140, color: 'amber--text text--darken-2'},
+                {PM1: 10, PM25: 120, PM10: 200, color: 'red--text text--lighten-1'},
+                {PM1: 9999, PM25: 9999, PM10: 9999, color: 'red--text'},
+            ]
+        }),
+        methods: {
+            async fetch() {
+                this.$http.get(`/api/last`).then((response) => {
+                    this.devices = response.data.data.devices;
+                    this.loading = false;
+                });
+            },
+            getColor(value, param) {
+                switch (param) {
+                    case 'PM1': {
+                        for (let color of this.colors) {
+                            if (value < color.PM1) {
+                                return color.color;
+                            }
+                        }
+                        break;
+                    }
+                    case 'PM25': {
+                        for (let color of this.colors) {
+                            if (value < color.PM25) {
+                                return color.color;
+                            }
+                        }
+                        break;
+                    }
+                    case 'PM10': {
+                        for (let color of this.colors) {
+                            if (value < color.PM10) {
+                                return color.color;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        },
+        created() {
+            this.fetch();
+        },
+
+    }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style>
 </style>

@@ -5,6 +5,11 @@
                 <v-card>
                     <v-card-title>
                         Użytkownik: {{ user.name }} {{ user.surname}}
+                        <v-spacer></v-spacer>
+                        <v-btn text icon color="error" @click="removeUser()"
+                               elevation="2">
+                            <v-icon>delete</v-icon>
+                        </v-btn>
                     </v-card-title>
 
                     <v-card-text>
@@ -108,6 +113,10 @@
             async changePassword() {
                 this.$http.post(`/api/user/${this.user.id}/password`, this.credentials).then(() => {
                 });
+            },
+            async removeUser() {
+                await this.$http.delete(`/api/user/${this.user.id}`);
+                this.$router.push('/users')
             },
         },
         created() {

@@ -23,10 +23,6 @@
                     :loading="loading"
             >
                 <template v-slot:item.actions="{ item }">
-                    <v-btn text icon color="error" @click="removeDevice(item.id)"
-                           elevation="2">
-                        <v-icon>delete</v-icon>
-                    </v-btn>
                     <v-btn text icon color="info" :to="{name: 'Device', params: { id: item.id }}"
                            elevation="2">
                         <v-icon>keyboard_arrow_right</v-icon>
@@ -60,9 +56,6 @@
                     this.devices = response.data.data.devices;
                     this.loading = false;
                 });
-            },
-            async removeDevice(id) {
-                this.$http.delete(`/api/device/${id}`);
             },
         },
         created() {
