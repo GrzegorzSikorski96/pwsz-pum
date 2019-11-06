@@ -17,6 +17,6 @@ class Device extends Model
 
     public function measurements(): HasMany
     {
-        return $this->hasMany(Measurement::class, 'device_id');
+        return $this->hasMany(Measurement::class, 'device_id')->orderByDesc('created_at');
     }
 }
