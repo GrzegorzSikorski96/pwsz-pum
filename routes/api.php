@@ -32,7 +32,7 @@ Route::group(
     ],
     function ($router): void {
         Route::post('/fetch/{deviceId}', 'MeasurementController@fetchDeviceMeasurement')->where(['deviceId' => '[0-9]+']);
-        Route::post('/fetch/all', 'MeasurementController@fetchAllDevicesMeasurements');
+        Route::get('/fetch/all', 'MeasurementController@fetchAllDevicesMeasurements');
         Route::post('/fetch/device/{deviceId}/{token}', 'DeviceController@fetchDevice');
 
         Route::post('/measurements/{deviceId}', 'MeasurementController@get');

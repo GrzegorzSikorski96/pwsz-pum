@@ -70,7 +70,7 @@ class DeviceService
     public function lastMeasurements(): Collection
     {
         $devices = Device::with('measurements')->get()->map(function ($query) {
-            $query->setRelation('measurements', $query->measurements->take(1));
+            $query->setRelation('measurements', $query->measurements->orderBy('created_at', 'DESC')->take(1));
             return $query;
         });
 
