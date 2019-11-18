@@ -16,7 +16,7 @@
 
             <v-card-text>
                 <v-row dense class="title">
-                    <span class="font-weight-bold text--primary mr-1">IJP: </span>
+                    <span class="font-weight-bold text--primary mr-1">Indeks jakości powietrza: </span>
                     <span :class="getColor(device.measurements[0].IJP, 'IJP')"> {{device.measurements[0].IJPString}}</span>
 
                 </v-row>
