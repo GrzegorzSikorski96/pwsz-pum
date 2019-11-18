@@ -9,6 +9,7 @@ class Measurement extends Model
 {
     protected $fillable = [
         'PM1',
+        'IJP',
         'PM25',
         'PM10',
         'Temperature',
