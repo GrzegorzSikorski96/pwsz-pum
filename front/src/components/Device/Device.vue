@@ -82,7 +82,7 @@
 
                     <v-card-text>
                         <div>
-                            <apexchart type=area height=350 :options="chartOptions" :series="getPM1"/>
+                            <apexchart type=area height=350 :options="setChartOptions('#01e205')" :series="getPM1"/>
                         </div>
                     </v-card-text>
                 </v-card>
@@ -94,7 +94,7 @@
 
                     <v-card-text>
                         <div>
-                            <apexchart type=area height=350 :options="chartOptions" :series="getPM25"/>
+                            <apexchart type=area height=350 :options="setChartOptions('#dfd000')" :series="getPM25"/>
                         </div>
                     </v-card-text>
                 </v-card>
@@ -106,7 +106,7 @@
 
                     <v-card-text>
                         <div>
-                            <apexchart type=area height=350 :options="chartOptions" :series="getPM10"/>
+                            <apexchart type=area height=350 :options="setChartOptions('#8300bc')" :series="getPM10"/>
                         </div>
                     </v-card-text>
                 </v-card>
@@ -118,7 +118,7 @@
 
                     <v-card-text>
                         <div>
-                            <apexchart type=area height=350 :options="chartOptions" :series="getTemperature"/>
+                            <apexchart type=area height=350 :options="setChartOptions('#c50600')" :series="getTemperature"/>
                         </div>
                     </v-card-text>
                 </v-card>
@@ -130,7 +130,7 @@
 
                     <v-card-text>
                         <div>
-                            <apexchart type=area height=350 :options="chartOptions" :series="getHumidity"/>
+                            <apexchart type=area height=350 :options="setChartOptions('#1f7caa')" :series="getHumidity"/>
                         </div>
                     </v-card-text>
                 </v-card>
@@ -213,6 +213,11 @@
                     this.loading = false;
                     this.fetchMeasurements();
                 });
+            },
+            setChartOptions(color) {
+                let options  = JSON.parse(JSON.stringify(this.chartOptions))
+                options.colors = [color]
+                return options
             },
             fetchMeasurements() {
                 this.$http.post(`/api/measurements/${this.$route.params.id}`, this.credentials)

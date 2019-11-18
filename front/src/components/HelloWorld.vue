@@ -9,7 +9,7 @@
         >
             <v-list-item two-line>
                 <v-list-item-content>
-                    <v-list-item-title class="headline">{{device.Name}}</v-list-item-title>
+                    <v-list-item-title class="headline">PWSZ im. Witelona w Legnicy</v-list-item-title>
                     <v-list-item-subtitle>Ostatni pomiar: {{device.measurements[0].created_at}}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
@@ -40,7 +40,20 @@
                     {{device.measurements[0].Humidity}}%
                 </v-row>
             </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+                <v-card
+                        class="mx-auto mt-3"
+                        color="#F9F9F9"
+                        max-width="400"
+                >
+                    <img src="../assets/skala-zapylenia.png"/>
+                </v-card>
+            </v-card-actions>
         </v-card>
+
     </v-container>
 </template>
 
