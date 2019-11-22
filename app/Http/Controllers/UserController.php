@@ -74,6 +74,16 @@ class UserController extends Controller
             ->getResponse();
     }
 
+    public function changeEmail(Request $request, $userId)
+    {
+        $this->userService->changeEmail($request->email, $userId);
+
+        return $this->apiResponse
+            ->setMessage('Email zmieniony.')
+            ->setSuccessStatus()
+            ->getResponse();
+    }
+
     public function remove(int $userId): JsonResponse
     {
         $this->userService->remove($userId);

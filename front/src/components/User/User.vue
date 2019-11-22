@@ -53,6 +53,23 @@
 
                 <v-card class="mt-4">
                     <v-card-title>
+                        Zmiana adresu email
+                    </v-card-title>
+
+                    <v-card-text>
+                        <v-text-field
+                                label="Nowy email"
+                                type="email"
+                                v-model="credentials.email"
+                        ></v-text-field>
+                        <v-btn text @click="changeEmail" class="mx-auto">
+                            Zmień email
+                        </v-btn>
+                    </v-card-text>
+                </v-card>
+
+                <v-card class="mt-4">
+                    <v-card-title>
                         Zmiana hasła
                     </v-card-title>
 
@@ -89,6 +106,7 @@
                 role: [],
                 credentials: {
                     password: '',
+                    email: '',
                 },
             }
         ),
@@ -112,6 +130,10 @@
             },
             async changePassword() {
                 this.$http.post(`/api/user/${this.user.id}/password`, this.credentials).then(() => {
+                });
+            },
+            async changeEmail() {
+                this.$http.post(`/api/user/${this.user.id}/email`, this.credentials).then(() => {
                 });
             },
             async removeUser() {

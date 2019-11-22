@@ -28,6 +28,7 @@ class RoleService
     {
         $role = $this->role($roleId);
         $user = $this->userService->user($userId);
+
         $user->role_id = $role->id;
         $user->save();
 

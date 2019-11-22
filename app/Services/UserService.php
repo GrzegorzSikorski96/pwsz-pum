@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\UnauthorizedException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserService
 {
@@ -44,6 +43,18 @@ class UserService
 
         if ($user->id == Auth::id() || Auth::user()->role_id == Role::ADMINISTRATOR) {
             $user->password = $this->hashPassword($password);
+            $user->save();
+        } else {
+            throw new UnauthorizedException();
+        }
+    }
+
+    public function changeEmail(string $email, int $userId)
+    {
+        $user = $this->user($userId);
+
+        if ($user->id == Auth::id() || Auth::user()->role_id == Role::ADMINISTRATOR) {
+            $user->email = $email;
             $user->save();
         } else {
             throw new UnauthorizedException();

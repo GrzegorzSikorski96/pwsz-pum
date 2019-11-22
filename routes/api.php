@@ -44,6 +44,7 @@ Route::group(
         Route::get('/last', 'MeasurementController@getLastMeasurements');
 
         Route::post('/user/{userId}/password', 'UserController@changePassword');
+        Route::post('/user/{userId}/email', 'UserController@changeEmail');
 
         Route::get('/users', 'UserController@users');
         Route::get('/user/{userId}', 'UserController@user');

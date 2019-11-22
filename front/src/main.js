@@ -21,7 +21,7 @@ Vue.use(Toasted, {
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 
-axios.defaults.baseURL = "https://backend.pwsz-pum.sikorski.dev/";
+axios.defaults.baseURL = "";
 
 initialize(store, router);
 
