@@ -13,7 +13,7 @@
     export default {
         data: () => ({
             drawer: null,
-            applicationName: 'Programowanie Urządzeń Mobilnych',
+            applicationName: process.env.VUE_APP_NAME,
         }),
     }
 </script>
