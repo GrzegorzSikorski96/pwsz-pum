@@ -21,9 +21,11 @@ export function initialize(store, router) {
     );
 
     axios.interceptors.request.use(function (config) {
-        // Do something before request is sent
-        let authKey = store.getters.getToken
+        config.baseURL = process.env.VUE_APP_BACKEND_URL;
+
+        let authKey = store.getters.getToken;
         config.headers["Authorization"] = `Bearer ${authKey}`;
+
         return config;
     });
 

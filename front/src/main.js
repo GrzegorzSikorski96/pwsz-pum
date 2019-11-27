@@ -21,8 +21,6 @@ Vue.use(Toasted, {
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 
-axios.defaults.baseURL = "";
-
 initialize(store, router);
 
 new Vue({
