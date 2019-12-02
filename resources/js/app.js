@@ -1,1 +1,35 @@
-require('./bootstrap');
+//require('./bootstrap');
+
+import Vue from 'vue';
+import './plugins/fontawesome';
+import App from './components/App';
+import router from './router';
+import vuetify from './plugins/vuetify';
+import axios from "axios";
+import VueAxios from 'vue-axios';
+import Vuex from 'vuex';
+import store from './store';
+import {initialize} from "./helpers/general";
+import Toasted from 'vue-toasted';
+import Vuetify from "vuetify";
+
+Vue.use(Vuex);
+Vue.use(Vuetify)
+
+Vue.use(Toasted, {
+    theme: "bubble",
+    position: "top-center",
+    duration: 5000
+});
+
+Vue.config.productionTip = false;
+Vue.use(VueAxios, axios);
+
+initialize(store, router);
+
+new Vue({
+    vuetify,
+    router,
+    store,
+    render: h => h(App)
+}).$mount('#app')
