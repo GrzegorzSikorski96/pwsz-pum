@@ -42,6 +42,7 @@ Route::group(
         Route::get('/devices', 'DeviceController@devices');
 
         Route::get('/last', 'MeasurementController@getLastMeasurements');
+        Route::get('/last/file/{deviceId}', 'FileController@getLastTxt');
 
         Route::post('/user/{userId}/password', 'UserController@changePassword');
         Route::post('/user/{userId}/email', 'UserController@changeEmail');

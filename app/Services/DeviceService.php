@@ -76,4 +76,9 @@ class DeviceService
 
         return $devices;
     }
+
+    public function lastMeasurementsFile(string $deviceId)
+    {
+        return public_path("storage/last/$deviceId.txt");
+    }
 }

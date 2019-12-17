@@ -7,6 +7,7 @@ use App\Models\Measurement;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class MeasurementService
 {
@@ -31,6 +32,8 @@ class MeasurementService
         $measurement = new Measurement($data);
         $measurement->device_id = $device->id;
         $measurement->save();
+
+        Storage::disk('public')->put("last/$device->Device.txt", $measurement);
 
         return $measurement;
     }
